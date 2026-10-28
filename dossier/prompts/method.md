@@ -48,7 +48,7 @@ One JSON file per report in `reports/`. All have `headline` (one sentence), `sum
 {"type": "diagram", "heading": "optional", "title": "what it shows", "mermaid": "flowchart LR\n ...", "conf": "confirmed", "cite": ["path:3"], "note": ""}
 ```
 
-Table rows must have exactly as many `cells` as `columns`. The page adds Basis and Sources columns itself. Inline `[[...]]` citations inside cells also count.
+Table rows must have exactly as many `cells` as `columns`. The page adds Basis and Sources columns itself. Do not add a "Where", "Where defined" or "Where read" column: the Sources column is the only place table citations are linked. Inline `[[...]]` citations inside cells also count.
 
 ## Diagrams (Mermaid)
 
