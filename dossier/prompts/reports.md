@@ -10,11 +10,12 @@ The one-page answer to "what is this?". Summary: what the project is, who it ser
 
 ## capabilities
 
-What the application can do, in user terms. One table: Capability, What it does, Where. Group related items. Separate what is implemented from what is only stubbed, planned or dead code, and say which. Features seen only in docs, not code, are `inferred` or `unknown`.
+What the application can do, in user terms. One table: Capability, What it does. Group related items. Separate what is implemented from what is only stubbed, planned or dead code, and say which. Features seen only in docs, not code, are `inferred` or `unknown`.
 
 ## interfaces
 
-Where the system meets the world: everything it offers, calls, takes in and sends out. Cover: interfaces it offers (HTTP routes, CLI commands, library exports, events, scheduled jobs, webhooks); interfaces it calls (external APIs, databases, queues, file systems); inputs (formats, validation, authentication) and outputs (responses, files, messages, logs, metrics). One table per direction, with columns such as Interface, Protocol or format, Inputs, Outputs, Authentication, Where defined. Add a context diagram if there is more than one external party. Note where authentication and authorization are enforced and where they are not. Do not describe error responses, error codes, exceptions or other failure outputs here. They belong only in `failures`; at most, add one sentence pointing to that report.
+Where the system meets the world: everything it offers, calls, takes in and sends out. Cover: interfaces it offers (HTTP routes, CLI commands, library exports, events, scheduled jobs, webhooks); interfaces it calls (external APIs, databases, queues, file systems); inputs (formats, validation, authentication) and outputs (responses, files, messages, logs, metrics). One table per direction, with columns such as Interface, Protocol or format, Inputs, Outputs, Authentication. Add a context diagram if there is more than one external party. Note where authentication and authorization are enforced and where they are not.
+
 ## architecture
 
 How the system is built, in enough depth that an engineer could find where any change belongs. This is the longest report. Include everything below that applies. When something does not apply (for example a library has no deployed services), say so as `confirmed` with the evidence, rather than leaving it out.
@@ -28,9 +29,9 @@ Required diagrams (Mermaid flowcharts in C4 style, see `method.md`):
 
 Required tables:
 
-- **Containers:** Name, Kind, Technology, Responsibility, Where defined, Runs as.
+- **Containers:** Name, Kind, Technology, Responsibility, Runs as.
 - **Modules and components:** Name, Responsibility, Key public entry points, Depends on, Used by, Approximate size. Cover every top-level module, and go deeper for the important ones.
-- **External dependencies and integrations:** Name, Kind (database, API, queue, cloud service, SaaS, library with a runtime role), Purpose, Direction, Protocol, Authentication, Where configured, What happens if it is down. Include databases, caches, message brokers, third-party APIs, identity providers, cloud services and file stores. List only major libraries and frameworks separately as "Key libraries" with their role.
+- **External dependencies and integrations:** Name, Kind (database, API, queue, cloud service, SaaS, library with a runtime role), Purpose, Direction, Protocol, Authentication, What happens if it is down. Include databases, caches, message brokers, third-party APIs, identity providers, cloud services and file stores. List only major libraries and frameworks separately as "Key libraries" with their role.
 - **Cross-cutting concerns:** how the system handles configuration, authentication and authorization, logging and tracing, error handling, caching, concurrency, feature flags and internationalization, each with where it lives.
 
 Also write short text on: the main design patterns and decisions you can see (each with evidence), the layering or dependency rules and any violations or cycles (these become risks), and the quality attributes the design favours (for example simplicity, throughput, extensibility). Records of decisions in the repository (ADRs, design docs) should be cited and summarised.
@@ -40,14 +41,14 @@ What data the system holds and moves.
 
 - An `erDiagram` of the main entities from schema, migrations, models or types, with key fields and relationships including cardinality. Split into several diagrams if there are more than about twelve entities, grouped by area.
 - **Data flow diagrams.** Draw one diagram per major flow (for example: user input to storage, read path, background processing, authentication). Keep each to about 6 to 10 nodes: the source, the main processing steps by module or function name, any data store, and the destination. Add one failure or rejection branch where the code has one. Label an arrow only when what moves is not obvious. Put the detail (fields, formats, sensitive data, trust boundaries) in a table beside the diagram, one row per step, rather than in the boxes.
-- A table of entities: Name, Purpose, Key fields, Where defined, Owner module, Sensitivity.
+- A table of entities: Name, Purpose, Key fields, Owner module, Sensitivity.
 - A table of data stores: Store, Technology, What it holds, Retention or lifecycle, Backup or migration approach.
 - Text on how data is validated, transformed, migrated and deleted, and which data looks sensitive, with evidence.
 
 If there is no persistent data, say so and describe the in-memory or message shapes instead, still with a detailed flow diagram of how values move through the code.
 ## code-tour
 
-How to read the code. Required: a numbered reading order (which module first and why), a table of entry points, and one sequence or flow diagram per main execution path (for example a request, a job run, a CLI command), each listing the modules it passes through in order. Include where to find configuration, tests and the build. Pick paths that teach the most, usually three or fewer. Point out the hardest-to-read or most-changed areas.
+How to read the code. Required: a numbered reading order (which module first and why; name each file with its filename and extension, such as `app.py`, and put its citations at the end of the line, not in the middle), a table of entry points, and one sequence or flow diagram per main execution path (for example a request, a job run, a CLI command), each listing the modules it passes through in order. Include where to find configuration, tests and the build. Pick paths that teach the most, usually three or fewer. Point out the hardest-to-read or most-changed areas.
 
 
 ## failures
@@ -55,7 +56,7 @@ How to read the code. Required: a numbered reading order (which module first and
 How the system fails and what it says when it does. This report owns every failure output: error responses, exceptions, error codes, exit codes and failure messages. Cover:
 
 - **Error handling strategy:** where errors are caught, wrapped, logged and reported, and whether the code fails fast or tries to continue.
-- **Error catalog:** one table of every error type, exception class, error code, HTTP status or exit code that the code defines or returns. Columns: `Code or type`, `Meaning`, `Raised or returned where`, `Seen by` (caller, user, operator), `Handling`. Include messages shown to users when they are fixed text. If there are many, group them and cover them all.
+- **Error catalog:** one table of every error type, exception class, error code, HTTP status or exit code that the code defines or returns. Columns: `Code or type`, `Meaning`, `Seen by` (caller, user, operator), `Handling`. Include messages shown to users when they are fixed text. If there are many, group them and cover them all.
 - **Failure modes:** one table of ways the system can fail. Columns: `ID` (F1, F2), `Failure`, `Trigger`, `Detection` (how anyone finds out), `Effect`, `Recovery`. Include dependency outages, bad input, timeouts, resource exhaustion, partial writes, concurrency conflicts, misconfiguration, expired credentials or certificates, and data corruption, where the code gives evidence.
 - **Resilience mechanisms:** retries, backoff, timeouts, circuit breakers, idempotency, transactions, queues with dead-letter handling, health checks, graceful shutdown.
 - **Observability of failure:** logging, metrics, alerts, tracing, error reporting services, and what an operator would see.
