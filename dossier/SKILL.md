@@ -3,7 +3,7 @@ name: dossier
 description: Build a cited HTML dossier that explains a git repository (capabilities, architecture, data model, code tour, delivery, risks, contributors). Use for /dossier home, /dossier build, /dossier version, /dossier correct, /dossier confirm.
 argument-hint: home [dir] | build [repo-path] [--ref branch-or-sha] | version | correct ... | confirm [ids] [--answer|--wrong|--note ...]
 disable-model-invocation: true
-allowed-tools: Bash(python3 *), Read, Grep, Glob, Write, Agent
+allowed-tools: Bash(uv run *), Read, Grep, Glob, Write, Agent
 ---
 
 # dossier
@@ -14,7 +14,7 @@ Python does the counting and the drawing. You do the reading and the writing. Ne
 
 Arguments the user typed: `$ARGUMENTS`
 
-The CLI is `python3 ${CLAUDE_SKILL_DIR}/scripts/dossier.py`. Call it `DOSSIER` below.
+The CLI is `uv run ${CLAUDE_SKILL_DIR}/scripts/dossier.py`. Call it `DOSSIER` below.
 
 ## Commands
 

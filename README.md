@@ -20,7 +20,7 @@ Every claim is marked confirmed, inferred, or unknown, and cites the files it ca
 
 ## Install
 
-Requires Claude Code and Python 3.
+Requires Claude Code and [uv](https://docs.astral.sh/uv/).
 
 ```sh
 git clone git@github-1npo:1npo/codebase-dossier.git
